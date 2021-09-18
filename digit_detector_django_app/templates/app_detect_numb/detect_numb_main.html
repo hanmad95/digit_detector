@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<!--  HEADER -->
+<head>
+  <meta charset="utf-8">
+  <title>Detect Handwritten Numbers:</title>
+  <meta name="description" content="Signature Pad - HTML5 canvas based smooth signature drawing using variable width spline interpolation.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/detect_numb_main.css' %}">
+
+  <div class="headline">
+    <h2> Detect Handwritten Numbers </h2>
+  </div>
+
+  <div class="head_descr">
+    <ol class="head_list">
+      <li>Please draw a digit between 0-9.</li>
+      <li>Click Submit!</li>
+      <li>See if algorithm was able to detect it.</li>
+    </ol>
+  </div>
+
+</head>
+
+<!--  BODY -->
+<body onselectstart="return false">
+
+  <div id="signature-pad" class="signature-pad">
+    <div class="signature-pad--body">
+      <canvas></canvas>
+    </div>
+    <div class="signature-pad--footer">
+      <div class="description">Sign above</div>
+
+      <div class="signature-pad--actions">
+        <div>
+          <button type="button" class="button clear" data-action="clear">Clear</button>
+          <button type="button" class="button" data-action="undo">Undo</button>
+        </div>
+        <div>
+            <button type="button" class="button submit" data-action="submit" onclick=post_canv()>Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  FORM -->
+  <form action="{% url 'get_data' %}" method="POST" id="form1">
+    {% csrf_token %}
+    <input type="hidden" name="canvasData" id="my_hidden">
+  </form>
+
+  <!-- OUTPUT STUFF -->
+  <div id="down_arrow"> {% autoescape off %} {{down_arrow}}{% endautoescape %}</div>
+  <div id="output_headline">{{headline}}</div>
+  <div id="handwritten_canvas">
+      <img id="handwritten_img" src="{{canvas_data|default:" "}}">
+  </div>
+  <div id="down_arrow"> {% autoescape off %} {{down_arrow}}{% endautoescape %}</div>
+  <div id="transformed_canvas">
+      <img id="transformed_img" src="{{input_canvas|default:" "}}">
+  </div>
+  <div id="output_prediction"> {{prediction}}</div>
+
+
+
+  <!-- AJAX STOP REFRESHING PAGE WITH SUBMISSION -->
+  <script type="text/javascript">
+      var frm = $('#form1');
+
+      frm.submit(function () {
+          $.ajax({
+              type: frm.attr('method'),
+              url: frm.attr('action'),
+              data: frm.serializeArray(),
+              cache: false,
+              success: function (data) {
+                  $("#check").html(data);
+              },
+              error: function(data) {
+                  $("#check").html("Something went wrong!");
+              }
+          });
+          return false;
+      });
+  </script>
+
+  <!--  ADD JS files -->
+  <script src={% static 'js/signature_pad.umd.js' %}></script>
+  <script src={% static 'js/app.js' %}></script>
+</body>
+
+</html>
