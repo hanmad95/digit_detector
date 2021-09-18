@@ -52,26 +52,17 @@ def predict_digit(img):
     target_dimensions =(28,28)
     img_transformed  = cv2.resize(img_transformed , target_dimensions,interpolation = cv2.INTER_CUBIC)
     print("Size after: ", img_transformed.shape)
-    #np.savetxt('test1.txt', img_transformed, delimiter=',')
 
-    # Predict the digit based on 28x28 IMAGE
     with model_graph.as_default():
         with tf_session.as_default():
             img_transformed_input = img_transformed.reshape(1,784) #keras_mnist: (1,784)
             prediction = model.predict_classes(img_transformed_input)
 
-    # Convert img_gray back to image string for displaying
-    #img_transformed_reversed = img_transformed * 255
-    #img_display = Image.fromarray(img_transformed_reversed, 'RGB') # Array -> PIL
-    #buffered = BytesIO()
-    #img_display.save(buffered, format="JPEG")
-    #data64 = base64.b64encode(buffered.getvalue())
-    #img_display_str = u'data:img/jpeg;base64,'+data64.decode('utf-8')
 
-    #np.savetxt('test2.txt', img_transformed_reversed, delimiter=',')
     print("Prediction Done: ", prediction[0])
     output = "Predicted digit is: " + str(prediction[0]) +"."
     return output
+    
 # ==========================================================================
 #  Views
 #===========================================================================
