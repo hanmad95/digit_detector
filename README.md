@@ -7,6 +7,6 @@ Inspired from:
 <hr>
 [1] Pretrained convolutional neural network has been used for detecting mnist images. <br>
 [2] MNIST input can be generated via drawing pad. <br>
-[3] Performance of the model is not perfect and the main goal was not the optimization of the model.
+[3] Performance of the model is not perfect and the main goal was not the optimization of the model. <br>
 [4] Explore the single digit detector and have fun!
 
